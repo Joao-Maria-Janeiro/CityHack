@@ -89,7 +89,7 @@ def daily_rundown(request, division_name):
 
 
 @login_required
-def product_rundown(request, product_name):
+def product_rundown(request, division_name, product_name):
     return HttpResponse('HEY')
     division = request.user.userprofile.divisions.get(name=division_name)
     product = division.products.get(name=product_name)
