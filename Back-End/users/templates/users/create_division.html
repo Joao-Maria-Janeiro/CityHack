@@ -1,0 +1,35 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <div class="container">
+          <br>
+          <br>
+          <h4 style="color:gray;">Escreva os seus dados</h4>
+          <br>
+          <br>
+          {% if error %}
+          <p>{{error}}</p>
+          {% endif %}
+          <form id="create-form" method="post" action="{% url 'create_division' %}">
+            {% csrf_token %}
+            <div class="form-row">
+              <input required type="text" class="form-control" id="id_name" name="name" placeholder="Insira aqui o nome da divisão">
+            </div>
+            <br>
+            <br>
+            {% if form.errors %}
+                <p class=" label label-danger">{{ form.errors }}</p>
+            {% endif %}
+            <button type="submit" value="Signup" class="btn btn-secondary">Registar</button>
+          </form>
+        </div>
+  </body>
+</html>

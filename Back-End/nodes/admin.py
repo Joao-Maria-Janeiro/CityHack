@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import NodeMCU
+from .models import Division
 # Register your models here.
-admin.site.register(NodeMCU)
+admin.site.register(Division)
