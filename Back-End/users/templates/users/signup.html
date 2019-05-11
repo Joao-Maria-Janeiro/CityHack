@@ -1,4 +1,4 @@
-{% load static %}
+[18:59, 5/11/2019] Diogo Ribeiro: {% load static %}
 
 
 <!DOCTYPE html>
@@ -6,52 +6,169 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+    body {
+          background-color: #262628;
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          color: #F2F2F2;
+    }
+
+    #container-already {
+      margin-top: 300px;
+      margin-bottom: 125px;
+      margin-left: 600px;
+      width: 330px;
+      height: 80px;
+      border-radius: 0.35em;
+      box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    #container-escreve {
+      margin-top: 150px;
+      margin-bottom: 125px;
+      margin-left: 600px;
+      width: 330px;
+      height: 80px;
+      border-radius: 0.35em;
+      box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    #container-caixa {
+      margin-top: -150px;
+      margin-bottom: 0px;
+      margin-left: 600px;
+      width: 330px;
+      height: 50px;
+      border-radius: 0.20em;
+      box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    #container-caixa2 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 600px;
+      width: 330px;
+      height: 15px;
+      border-radius: 0.20em;
+      box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .input {
+      margin: auto;
+      width: 240px;
+      border-radius: 0px;
+      background-color: #373b3d;
+      padding: 8px 0px;
+      margin-top: 15px;
+    }
+
+    input[type=text] {
+      color: #949494;
+      margin: 0;
+      background-color: #373b3d;
+      border: 1px solid #373b3d;
+      padding: 6px 0px;
+      border-radius: 3px;
+    }
+
+    input[type=password] {
+      color: #949494;
+      margin: 0;
+      background-color: #373b3d;
+      border: 1px solid #373b3d;
+      padding: 6px 0px;
+      border-radius: 3px;
+    }
+
+    input[type=password]:focus {
+      border: 1px solid #373b3d;
+    }
+
+    input[type=email] {
+      color: #949494;
+      margin: 0;
+      background-color: #373b3d;
+      border: 1px solid #373b3d;
+      padding: 6px 0px;
+      border-radius: 3px;
+    }
+
+    input[type=email]:focus {
+      border: 1px solid #373b3d;
+    }
+
+    #feito {
+      position: relative;
+      background-color: #1A1C1D;
+      width: 100%;
+      padding: 20px 0px;
+      border-radius: 0.35em;
+      font-size: 22px;
+    }
+    </style>
   </head>
   <body>
-    <br>
-    <br>
-
     {% if user.is_authenticated %}
-    <h2> You already have an account {{ user.username }}</h2>
+    <div id="container-already">
+        <div id="feito">
+            <i class="material-icons "> You already have an account {{ user.username }}
+        </div>
+    </div>
     {% else %}
 
     <div class="container">
-          <br>
-          <br>
-          <h4 style="color:gray;">Escreva os seus dados</h4>
-          <br>
-          <br>
+          <div id="container-escreve">
+            <div id="feito">
+                <i class="material-icons ">Write your Sing up
+            </div>
+          </div>
           {% if error %}
           <p>{{error}}</p>
           {% endif %}
           <form id="signup-form" method="post" action="{% url 'signup' %}">
             {% csrf_token %}
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <input type="email" required class="form-control"id="id_email" name="email" placeholder="Email">
+            <div id="container-caixa">
+              <div id="feito">
+                  <input type="email" required class="form-control"id="id_email" name="email" placeholder="Email">
               </div>
-              <div class="form-group col-md-6">
+            </div>
+            <div id="container-caixa2">
+              <div id="feito">
                 <input type="text" required class="form-control"id="id_username" name="username" placeholder="Username">
               </div>
             </div>
             <br>
             <br>
-            <div class="form-row">
-              <div class="form-group col-md-6">
+            <div id="container-caixa2">
+              <div id="feito">
                 <input required type="password" class="form-control" id="id_password1" name="password1" placeholder="Password">
-              </div>
-              <div class="form-group col-md-6">
-                <input required type="password" class="form-control" id="id_password2" name="password2" placeholder="Repetir Password">
               </div>
             </div>
             <br>
             <br>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <input required type="text" class="form-control" id="id_budget" name="budget" placeholder="Insira aqui o seu objetivo mensal (em euros)">
+            <div id="container-caixa2">
+              <div id="feito">
+                <input required type="password" class="form-control" id="id_password2" name="password2" placeholder="Repeat Password">
               </div>
-              <div class="form-group col-md-6">
-                <input required type="text" class="form-control" id="id_energy_plan" name="energy_plan" placeholder="Plano de Energia">
+            </div>
+            <br>
+            <br>
+            <div id="container-caixa2">
+              <div id="feito">
+                <input required type="text" class="form-control" id="id_budget" name="budget" placeholder="Monthly goal (€)">
+              </div>
+            </div>
+            <br>
+            <br>
+            <div id="container-caixa2">
+              <div id="feito">
+                <input required type="text" class="form-control" id="id_energy_plan" name="energy_plan" placeholder="Energy Plan">
               </div>
             </div>
             <br>
@@ -59,7 +176,11 @@
             {% if form.errors %}
                 <p class=" label label-danger">{{ form.errors }}</p>
             {% endif %}
-            <button type="submit" value="Signup" class="btn btn-secondary">Registar</button>
+            <div id="container-caixa2">
+              <div id="feito">
+                <button type="submit" value="Signup" class="btn btn-secondary">Registar</button>
+              </div>
+            </div>
           </form>
         </div>
 

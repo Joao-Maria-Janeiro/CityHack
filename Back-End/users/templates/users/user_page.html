@@ -5,6 +5,12 @@
     <title></title>
   </head>
   <body>
-    {}
+    <div class="container">
+      {% for div in divisions %}
+      <div class="row">
+        <h1>{{ div.name }}</h1>
+      </div>
+      {% endfor %}
+    </div>
   </body>
 </html>
