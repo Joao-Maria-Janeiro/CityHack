@@ -71,6 +71,7 @@ def register_plug(request):
         # division = Division.objects.get(name=request.POST['division_name'])
 
         product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'])
+        product.save()
         for i in range(1, calendar.monthrange(now.year, now.month)[1]+1):
             day = Day(day_number=i)
             day.save()
@@ -89,7 +90,7 @@ def daily_rundown(request, division_name):
 
 
 @login_required
-def product_rundown(request, division_name, product_name):
+def product_rundown(request, division_name,product_name):
     return HttpResponse('HEY')
     division = request.user.userprofile.divisions.get(name=division_name)
     product = division.products.get(name=product_name)
