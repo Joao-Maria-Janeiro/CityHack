@@ -1,0 +1,69 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <br>
+    <br>
+
+    {% if user.is_authenticated %}
+    <h2> You already have an account {{ user.username }}</h2>
+    {% else %}
+
+    <div class="container">
+          <br>
+          <br>
+          <h4 style="color:gray;">Escreva os seus dados</h4>
+          <br>
+          <br>
+          {% if error %}
+          <p>{{error}}</p>
+          {% endif %}
+          <form id="signup-form" method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <input type="email" required class="form-control"id="id_email" name="email" placeholder="Email">
+              </div>
+              <div class="form-group col-md-6">
+                <input type="text" required class="form-control"id="id_username" name="username" placeholder="Username">
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <input required type="password" class="form-control" id="id_password1" name="password1" placeholder="Password">
+              </div>
+              <div class="form-group col-md-6">
+                <input required type="password" class="form-control" id="id_password2" name="password2" placeholder="Repetir Password">
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <input required type="text" class="form-control" id="id_budget" name="budget" placeholder="Insira aqui o seu objetivo mensal (em euros)">
+              </div>
+              <div class="form-group col-md-6">
+                <input required type="text" class="form-control" id="id_energy_plan" name="energy_plan" placeholder="Plano de Energia">
+              </div>
+            </div>
+            <br>
+            <br>
+            {% if form.errors %}
+                <p class=" label label-danger">{{ form.errors }}</p>
+            {% endif %}
+            <button type="submit" value="Signup" class="btn btn-secondary">Registar</button>
+          </form>
+        </div>
+
+
+    {% endif %}
+  </body>
+</html>
