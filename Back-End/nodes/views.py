@@ -54,8 +54,8 @@ def check_proximity_to_value(node):
 @login_required
 def register_plug(request):
     if request.method == 'POST':
-        division = Division.objects.get(name=request.POST['divison_name'])
-        product = Product(activation_key = request.POST['activation_key'])
+        division = Division.objects.get(name=request.POST['division_name'])
+        product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'])
         product.save()
         division.products.add(product)
         division.save()

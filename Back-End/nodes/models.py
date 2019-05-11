@@ -15,6 +15,7 @@ class Plug(models.Model):
     current_daily_waste = models.FloatField(default=-1.0)
     on = models.BooleanField(default = True)
     current_day = models.IntegerField(default=-1)
+    name = models.CharField(max_length=100)
 
 class Division(models.Model):
     users = models.ManyToManyField(DivionUser, blank=True)
