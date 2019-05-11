@@ -25,12 +25,26 @@ def signup_view(request):
     return render(request, 'users/signup.html', {'form': form})
 
 def create_division(request):
-    print(request.method)
     if request.method =='POST':
         division = Division(name = request.POST['name'])
         division.save()
         user = request.user
         user.userprofile.divisions.add(division)
         user.save()
+        return redirect('nodes/register_plug')
     else:
         return render(request, 'users/create_division.html')
+
+def login(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = User.objects.get(email=email)
+        authenticated = authenticate(username=user.username, password=password)
+        if authenticated is not None:
+            login(request, user)
+        else:
+            return HttpResponse('Error logging in')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'users/login.html', {'form': form})

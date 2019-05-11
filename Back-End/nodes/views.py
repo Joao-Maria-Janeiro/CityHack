@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Plug
+from .models import Plug, Division
 from django.http import HttpResponse
-from celery.schedules import crontab
-from celery.task import periodic_task
 import datetime
 import smtplib
 import nodes.config_email as config
+from django.contrib.auth.decorators import login_required
+
 
 # The price for Kwh for each power contract (price) of the simple contract
 # electricity_costs = {
@@ -51,6 +51,31 @@ def check_proximity_to_value(node):
         send_email(node)
 
 # Create your views here.
+@login_required
+def register_plug(request):
+    if request.method == 'POST':
+        division = Division.objects.get(name=request.POST['divison_name'])
+        product = Product(activation_key = request.POST['activation_key'])
+        product.save()
+        division.products.add(product)
+        division.save()
+        return HttpResponse('Product registered with success')
+    else:
+        return render(request, 'nodes/register_plug.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def create_node(request):
     if request.method == 'POST':
         user = request.user
