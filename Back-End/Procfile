@@ -1,1 +1,1 @@
-web: gunicorn SaoPerolasWebsite.wsgi --log-file -
+web: gunicorn CityHack.wsgi --log-file -
