@@ -1,0 +1,20 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div class="container">
+      {% for division in divisions %}
+        <h1>{{division.name}}</h1>
+        {% for day in division.days.all %}
+          <h1>{{day.day_number}}: {{day.energy_per_day}}</h1>
+        {% endfor %}
+      {%endfor%}
+    </div>
+  </body>
+</html>

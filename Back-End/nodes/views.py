@@ -36,6 +36,7 @@ def send_email(node):
         print("E-mail not sent!")
         print(e)
 
+
 def update_daily(node):
     currentDT = datetime.datetime.now()
     day = currentDT.day
@@ -54,7 +55,18 @@ def check_proximity_to_value(node):
 @login_required
 def register_plug(request):
     if request.method == 'POST':
-        division = Division.objects.get(name=request.POST['division_name'])
+        try:
+            division = request.user.userprofile.divisions.get(name=request.POST['division_name'])
+        except Exception as e:
+            division = Division(name = request.POST['division_name'])
+            division.save()
+            for i in range(1, calendar.monthrange(now.year, now.month)[1]+1):
+                day = Day(day_number=i)
+                day.save()
+                division.days.add(day)
+            request.user.userprofile.divisions.add(division)
+            request.user.save()
+        # division = Division.objects.get(name=request.POST['division_name'])
         product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'])
         product.save()
         division.products.add(product)
@@ -63,8 +75,10 @@ def register_plug(request):
     else:
         return render(request, 'nodes/register_plug.html')
 
-
-
+@login_required
+def daily_rundown(request):
+    divisions = request.user.userprofile.divisions.all()
+    return render(request, 'nodes/daily_rundown.html', {'divisions': divisions})
 
 
 

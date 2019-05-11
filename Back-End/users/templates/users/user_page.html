@@ -6,12 +6,14 @@
   </head>
   <body>
     <div class="container">
-      {% for div in divisions %}
+      {% for div in divisions.all %}
       <div class="row">
-        <h1>{{ div.name }}</h1>
-        {% for div in divisions %}
+        <a href="{% url 'daily_rundown' %}"><h1>{{ div.name }}</h1></a>
+        {% for product in div.products.all %}
+        <h1>{{ product.name }}</h1>
         {% endfor %}
       </div>
+      <h2>{{div.monthly_waste}}</h2>
       {% endfor %}
     </div>
   </body>

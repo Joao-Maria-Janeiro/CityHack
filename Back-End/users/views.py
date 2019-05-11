@@ -6,7 +6,9 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
-from nodes.models import Division
+from nodes.models import Division, Day
+import calendar
+import datetime
 
 # Create your views here.
 def signup_view(request):
@@ -26,7 +28,13 @@ def signup_view(request):
 
 def create_division(request):
     if request.method =='POST':
+        now = datetime.datetime.now()
         division = Division(name = request.POST['name'])
+        division.save()
+        for i in range(1, calendar.monthrange(now.year, now.month)[1]+1):
+            day = Day(day_number=i)
+            day.save()
+            division.days.add(day)
         division.save()
         user = request.user
         user.userprofile.divisions.add(division)
@@ -49,7 +57,6 @@ def login_view(request):
     else:
         form = AuthenticationForm()
         return render(request, 'users/login.html', {'form': form})
-
 
 def user_page(request):
     user = request.user

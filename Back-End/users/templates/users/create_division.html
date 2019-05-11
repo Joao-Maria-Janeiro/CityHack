@@ -6,30 +6,84 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+    body{
+      background-color: #262628;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #F2F2F2;
+    }
+    #container-aviso {
+      background-color: #1D1F20;
+      position: relative;
+      margin-top: 250px;
+      margin-bottom: 125px;
+      margin-right: 550px;
+      margin-left: 600px;
+      width: 360px;
+      height: 200px;
+      text-align: center;
+    }
+
+    #container-caixa {
+      margin-top: -270px;
+      margin-bottom: 0px;
+      margin-left: 600px;
+      width: 360px;
+      height: 30px;
+      text-align: center;
+    }
+
+    #container-caixa2 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 600px;
+      width: 360px;
+      height: 50px;
+      text-align: center;
+    }
+
+    #texto {
+      position: relative;
+      background-color: #1A1C1D;
+      width: 100%;
+      padding: 20px 0px;
+      border-radius: 0.35em;
+      font-size: 35px;
+    }
+
+    </style>
   </head>
   <body>
 
     <div class="container">
-          <br>
-          <br>
-          <h4 style="color:gray;">Escreva os seus dados</h4>
-          <br>
-          <br>
-          {% if error %}
-          <p>{{error}}</p>
-          {% endif %}
-          <form id="create-form" method="post" action="{% url 'create_division' %}">
-            {% csrf_token %}
-            <div class="form-row">
-              <input required type="text" class="form-control" id="id_name" name="name" placeholder="Insira aqui o nome da divisão">
-            </div>
-            <br>
-            <br>
-            {% if form.errors %}
-                <p class=" label label-danger">{{ form.errors }}</p>
-            {% endif %}
-            <button type="submit" value="Signup" class="btn btn-secondary">Registar</button>
-          </form>
+      <div id="container-aviso">
+          <div id="texto">
+            <i class="material-icons "> Write your information
         </div>
+      </div>
+      {% if error %}
+      <p>{{error}}</p>
+      {% endif %}
+      <form id="create-form" method="post" action="{% url 'create_division' %}">
+        {% csrf_token %}
+        <div id="container-caixa">
+          <div id="texto">
+            <input required type="text" class="form-control" id="id_name" name="name" placeholder="Division">
+          </div>
+        </div>
+        <br>
+        <br>
+        {% if form.errors %}
+            <p class=" label label-danger">{{ form.errors }}</p>
+        {% endif %}
+        <div id="container-caixa2">
+          <div id="texto">
+            <button type="submit" value="Signup" class="btn btn-secondary">Registar</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </body>
 </html>
