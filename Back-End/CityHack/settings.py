@@ -123,5 +123,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+<<<<<<< HEAD
 LOGIN_REDIRECT_URL = '/users/login'
+=======
+# LOGIN_REDIRECT_URL = '/users/login'
+>>>>>>> master
 LOGIN_URL = '/users/login'

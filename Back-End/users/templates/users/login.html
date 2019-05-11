@@ -139,17 +139,29 @@
         </div>
 
         <form id="create-form" method="post" action="{% url 'login' %}">
+<<<<<<< HEAD
             <div class="input">
                 <div class="input-addon">
                 </div>
                 <input id="email" name="email" placeholder="Email" type="email" required class="validate" autocomplete="off">
+=======
+          {% csrf_token %}
+            <div class="input">
+                <div class="input-addon">
+                </div>
+                <input id="email" name="email" placeholder="Email" type="email" required class="validate">
+>>>>>>> master
             </div>
 
             <div class="input">
                 <div class="input-addon">
                     <i class="material-icons">
                 </div>
+<<<<<<< HEAD
                 <input id="password" name="password" placeholder="Password" type="password" required class="validate" autocomplete="off">
+=======
+                <input id="password" name="password" placeholder="Password" type="password" required class="validate" >
+>>>>>>> master
             </div>
 
             <input type="submit" value="LogIn" />

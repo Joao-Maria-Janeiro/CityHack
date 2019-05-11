@@ -31,11 +31,19 @@ def create_division(request):
         user = request.user
         user.userprofile.divisions.add(division)
         user.save()
+<<<<<<< HEAD
         return redirect('nodes/register_plug')
     else:
         return render(request, 'users/create_division.html')
 
 def login(request):
+=======
+        return redirect('register_plug')
+    else:
+        return render(request, 'users/create_division.html')
+
+def login_view(request):
+>>>>>>> master
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -45,6 +53,19 @@ def login(request):
             login(request, user)
         else:
             return HttpResponse('Error logging in')
+<<<<<<< HEAD
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
+=======
+        return redirect('user_page')
+    else:
+        form = AuthenticationForm()
+        return render(request, 'users/login.html', {'form': form})
+
+
+def user_page(request):
+    user = request.user
+    divisions = user.userprofile.divisions.all()
+    return render(request, 'users/user_page.html', {'divisions': divisions})
+>>>>>>> master
