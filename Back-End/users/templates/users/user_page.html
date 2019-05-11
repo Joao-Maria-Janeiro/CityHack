@@ -8,13 +8,14 @@
     <div class="container">
       {% for div in divisions.all %}
       <div class="row">
-        <a href="{% url 'daily_rundown' %}"><h1>{{ div.name }}</h1></a>
+        <a href="{% url 'daily_rundown' div.name %}"><h1>{{ div.name }}</h1></a>
         {% for product in div.products.all %}
-        <h1>{{ product.name }}</h1>
+          <a href="{% url 'product_rundown' division_name=div.name product_name=product.name %}">{{ product.name }}</a>
         {% endfor %}
       </div>
       <h2>{{div.monthly_waste}}</h2>
       {% endfor %}
+
     </div>
   </body>
 </html>

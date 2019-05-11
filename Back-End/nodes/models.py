@@ -16,6 +16,7 @@ class Plug(models.Model):
     on = models.BooleanField(default = True)
     current_day = models.IntegerField(default=-1)
     name = models.CharField(max_length=100)
+    days = models.ManyToManyField(Day, blank=True)
 
 class Division(models.Model):
     users = models.ManyToManyField(DivionUser, blank=True)

@@ -9,8 +9,8 @@
   </head>
   <body>
     <div class="container">
-        <h1>{{division.name}}</h1>
-        {% for day in division.days.all %}
+        <h1>{{product.name}}</h1>
+        {% for day in product.days.all %}
           <h1>{{day.day_number}}: {{day.energy_per_day}}</h1>
         {% endfor %}
     </div>

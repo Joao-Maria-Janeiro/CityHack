@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .models import Plug, Division
+from .models import Plug, Division, Day
 from django.http import HttpResponse
 import datetime
 import smtplib
 import nodes.config_email as config
 from django.contrib.auth.decorators import login_required
+import calendar
 
 
 # The price for Kwh for each power contract (price) of the simple contract
@@ -55,6 +56,7 @@ def check_proximity_to_value(node):
 @login_required
 def register_plug(request):
     if request.method == 'POST':
+        now = datetime.datetime.now()
         try:
             division = request.user.userprofile.divisions.get(name=request.POST['division_name'])
         except Exception as e:
@@ -67,7 +69,12 @@ def register_plug(request):
             request.user.userprofile.divisions.add(division)
             request.user.save()
         # division = Division.objects.get(name=request.POST['division_name'])
+
         product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'])
+        for i in range(1, calendar.monthrange(now.year, now.month)[1]+1):
+            day = Day(day_number=i)
+            day.save()
+            product.days.add(day)
         product.save()
         division.products.add(product)
         division.save()
@@ -76,13 +83,17 @@ def register_plug(request):
         return render(request, 'nodes/register_plug.html')
 
 @login_required
-def daily_rundown(request):
-    divisions = request.user.userprofile.divisions.all()
-    return render(request, 'nodes/daily_rundown.html', {'divisions': divisions})
+def daily_rundown(request, division_name):
+    division = request.user.userprofile.divisions.get(name=division_name)
+    return render(request, 'nodes/daily_rundown.html', {'division': division})
 
 
-
-
+@login_required
+def product_rundown(request, product_name):
+    return HttpResponse('HEY')
+    division = request.user.userprofile.divisions.get(name=division_name)
+    product = division.products.get(name=product_name)
+    return render(request, 'nodes/product_rundown.html', {'product': product})
 
 
 
