@@ -54,7 +54,7 @@ def update_daily(node):
 
 def check_proximity_to_value(node, user):
     curr_value = node.current_daily_waste * user.energy_plan
-    if(curr_value > (user.monthly_budget/30) - 15):
+    if(curr_value > (user.monthly_budget/calendar.monthrange(now.year, now.month)[1]) - 15):
         send_email(node)
 
 # Create your views here.
@@ -73,6 +73,7 @@ def register_plug(request):
                 division.days.add(day)
             request.user.userprofile.divisions.add(division)
             request.user.save()
+            division.save()
         # division = Division.objects.get(name=request.POST['division_name'])
 
         product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'], current_day = now.day)
@@ -101,7 +102,7 @@ def daily_rundown(request, division_name):
 #    product = division.products.get(name=product_name)
 #    return render(request, 'nodes/product_rundown.html', {'product': product})
 
-
+@login_required
 def create_node(request):
     if request.method == 'POST':
         user = request.user
@@ -113,7 +114,7 @@ def create_node(request):
     else:
         return HttpResponse(' Only POST method is allowed ')
 
-
+@login_required
 def associate_member(request):
     if request.method == 'POST':
         user = request.user
@@ -129,7 +130,7 @@ def associate_member(request):
     else:
         return render(request, 'nodes/associate_member.html')
 
-
+@login_required
 def member_waste(request, member_name):
     user = request.user
     member = user.userprofile.members.get(name=member_name)
@@ -147,7 +148,7 @@ def member_waste(request, member_name):
 
     return render(request, 'nodes/member_waste.html', {'divisions': divisions, 'member': member, 'member_name':member_name, 'current_waste':current_waste, 'div_price':div_price})
 
-
+@login_required
 def update_waste(request):
     if request.method == 'POST':
         node = Plug.objects.get(activation_key=request.META['HTTP_ACTIVATIONKEY'])
@@ -168,7 +169,11 @@ def update_waste(request):
             if found == 1:
                 break
         div.daily_waste += float(request.POST['read'])
+        div.monthly_waste += float(request.POST['read'])
+        day = div.days.get(day_number=datetime.datetime.now().day)
+        day.energy_per_day += float(request.POST['read'])
         div.save()
+        day.save()
         check_proximity_to_value(node, user)
         return HttpResponse('Waste changed')
     else:
