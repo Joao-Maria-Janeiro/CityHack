@@ -9,13 +9,30 @@
       {% for div in divisions.all %}
       <div class="row">
         <a href="{% url 'daily_rundown' div.name %}"><h1>{{ div.name }}</h1></a>
+        <h1>Users:</h1>
+        {% if div.member_set.all.count != 0 %}
+          {% for member in div.member_set.all %}
+          <a href="{% url 'member_waste' member.name  %}">{{member.name}}</a>
+          {% endfor %}
+        {% else %}
+        <p>No users currently registered in this room</p>
+        {% endif %}
+
+        <h1>Plugs:</h1>
         {% for product in div.products.all %}
         <p>{{product.name}}</p>
         {% endfor %}
       </div>
       <h2>{{div.monthly_waste}}</h2>
       {% endfor %}
-
+      <!-- {% for member in members %}
+        <h1>{{ member.name }}</h1>
+        <h1>{{member.monthly_waste}}</h1>
+        <h1>User's divisions:</h1>
+        {% for division in member.divisions.all %}
+          <p>{{division.name}}: {{division.monthly_waste}}</p>
+        {% endfor %}
+      {% endfor %} -->
     </div>
   </body>
 </html>
