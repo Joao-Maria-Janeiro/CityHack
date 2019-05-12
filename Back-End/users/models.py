@@ -9,6 +9,14 @@ from nodes.models import Day, Division
 User = get_user_model()
 
 # Create your models here.
+
+
+class Member(models.Model):
+    name = models.CharField(max_length=100)
+    monthly_waste = models.FloatField(default=-1.0)
+    divisions = models.ManyToManyField(Division, blank=True)
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     daily_waste = models.FloatField(default=-1.0)
@@ -31,6 +39,7 @@ class UserProfile(models.Model):
     energy_plan = models.FloatField(default=-1.0)
     days = models.ManyToManyField(Day, blank=True)
     divisions = models.ManyToManyField(Division, blank=True)
+    members = models.ManyToManyField(Member, blank=True)
 
     def __str__(self):
         return self.user.username

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Plug, Division, Day
+from users.models import Member
 from django.http import HttpResponse
 import datetime
 import smtplib
@@ -71,6 +72,7 @@ def register_plug(request):
         # division = Division.objects.get(name=request.POST['division_name'])
 
         product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'])
+        product.save()
         for i in range(1, calendar.monthrange(now.year, now.month)[1]+1):
             day = Day(day_number=i)
             day.save()
@@ -88,17 +90,12 @@ def daily_rundown(request, division_name):
     return render(request, 'nodes/daily_rundown.html', {'division': division})
 
 
-@login_required
-def product_rundown(request, product_name):
-    return HttpResponse('HEY')
-    division = request.user.userprofile.divisions.get(name=division_name)
-    product = division.products.get(name=product_name)
-    return render(request, 'nodes/product_rundown.html', {'product': product})
-
-
-
-
-
+#@login_required
+#def product_rundown(request, division_name,product_name):
+#    return HttpResponse('HEY')
+#    division = request.user.userprofile.divisions.get(name=division_name)
+#    product = division.products.get(name=product_name)
+#    return render(request, 'nodes/product_rundown.html', {'product': product})
 
 
 def create_node(request):
@@ -111,14 +108,36 @@ def create_node(request):
         return HttpResponse(' User with activation key  ' + node.activation_key + ' created with ' + 'monthly budget set to ' + str(node.monthly_budget) + ' and your power plan is ' + str(node.power))
     else:
         return HttpResponse(' Only POST method is allowed ')
-    # if request.method == 'POST':
-    #     currentDT = datetime.datetime.now()
-    #     day = currentDT.day
-    #     node = Plug(activation_key=request.POST['activation_key'], curr_day=day, monthly_budget=request.POST['monthly_budget'], power=request.POST['power'], email=request.POST['email'])
-    #     node.save()
-    #     return HttpResponse(' User with activation key  ' + node.activation_key + ' created with ' + 'monthly budget set to ' + str(node.monthly_budget) + ' and your power plan is ' + str(node.power))
-    # else:
-    #     return HttpResponse(' Only POST method is allowed ')
+
+
+def associate_member(request):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            member = Member.objects.get(name=request.POST['name'])
+        except Exception as e:
+            member = Member(name=request.POST['name'])
+        member.save()
+        user.userprofile.members.add(member)
+        division = user.userprofile.divisions.get(name=request.POST['division_name'])
+        member.divisions.add(division)
+        return HttpResponse('Member created with success')
+    else:
+        return render(request, 'nodes/associate_member.html')
+
+
+def member_waste(request, member_name):
+    user = request.user
+    member = user.userprofile.members.get(name=member_name)
+    divisions = member.divisions.all()
+    current_waste = 0
+    for division in divisions:
+        number_of_members = division.member_set.all().count()
+        current_waste += division.monthly_waste/number_of_members
+    member.monthly_waste = current_waste
+    member.save()
+
+    return render(request, 'nodes/member_waste.html', {'divisions': divisions, 'member': member, 'member_name':member_name, 'current_waste':current_waste})
 
 def update_waste(request):
     return HttpResponse('HEY')

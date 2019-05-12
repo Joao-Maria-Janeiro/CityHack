@@ -61,4 +61,5 @@ def login_view(request):
 def user_page(request):
     user = request.user
     divisions = user.userprofile.divisions.all()
-    return render(request, 'users/user_page.html', {'divisions': divisions})
+    members = user.userprofile.members.all()
+    return render(request, 'users/user_page.html', {'divisions': divisions, 'members':members})

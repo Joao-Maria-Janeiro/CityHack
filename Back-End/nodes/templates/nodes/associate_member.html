@@ -1,0 +1,40 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <div class="container">
+          <br>
+          <br>
+          <h4 style="color:gray;">Register a member</h4>
+          <br>
+          <br>
+          {% if error %}
+          <p>{{error}}</p>
+          {% endif %}
+          <form id="create-form" method="post" action="{% url 'associate_member' %}">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="col-md-6">
+                <input required type="text" class="form-control" id="id_name" name="name" placeholder="Insert the member name ">
+              </div>
+              <div class="col-md-6">
+                <input required type="text" class="form-control" id="id_division_name" name="division_name" placeholder="Register a division on the user">
+              </div>
+            </div>
+            <br>
+            <br>
+            {% if form.errors %}
+                <p class=" label label-danger">{{ form.errors }}</p>
+            {% endif %}
+            <button type="submit" value="Submit" class="btn btn-secondary">ADD</button>
+          </form>
+        </div>
+  </body>
+</html>

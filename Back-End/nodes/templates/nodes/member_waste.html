@@ -1,0 +1,33 @@
+{% load static %}
+{% load mathfilters %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+  <div class="">
+    <h1>{{member.name}}</h1>
+    <h1>Total monthly costs so far: {{member.monthly_waste}}</h1>
+    {% for division in member.divisions.all %}
+      <p>{{division.name}}: {{ division.monthly_waste|div:division.member_set.all.count}}</p>
+    {% endfor %}
+
+    <!-- {% for member in members %}
+      {%if member.name == member_name%}
+      <h1>{{ member.name }}</h1>
+      <h1>{{member.monthly_waste}}</h1>
+      <h1>User's divisions:</h1>
+      {% for division in member.divisions.all %}
+        <p>{{division.name}}: {{division.monthly_waste}}</p>
+      {% endfor %}
+      {%endif%}
+    {% endfor %}
+    {{current_waste}} -->
+  </div>
+  </body>
+</html>
