@@ -3,27 +3,151 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+    body {
+          background-color: #262628;
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          color: #F2F2F2;
+    }
+    #container-escreve {
+      margin-top: 100px;
+      margin-bottom: 125px;
+      margin-left: 600px;
+      width: 330px;
+      height: 0px;
+      text-align: center;
+    }
+
+    #container-caixa {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 600px;
+      width: 330px;
+      height: 20px;
+      text-align: center;
+    }
+
+    #container-caixa2 {
+      margin-top: -20px;
+      margin-bottom: 20px;
+      margin-left: 600px;
+      width: 330px;
+      height: 10px;
+      text-align: center;
+    }
+
+    #container-caixa3 {
+      margin-top: 30px;
+      margin-bottom: 30px;
+      margin-left: 600px;
+      width: 330px;
+      height: 5px;
+      text-align: center;
+    }
+
+    #container-caixa4 {
+      margin-top:-35px;
+      margin-bottom: 10px;
+      margin-left: 600px;
+      width: 330px;
+      height: 33px;
+      text-align: center;
+    }
+
+    #container-caixa5 {
+      margin-top:30px;
+      margin-bottom: 0px;
+      margin-left: 600px;
+      width: 330px;
+      height: 100px;
+      text-align: center;
+    }
+
+    #container-caixa6 {
+      margin-top: -30px;
+      margin-bottom: 30px;
+      margin-left: 600px;
+      width: 330px;
+      height: 20px;
+      text-align: center;
+    }
+
+    #feito {
+      position: center;
+      background-color: #1A1C1D;
+      width: 100%;
+      padding: 20px 0px;
+      border-radius: 0.35em;
+      font-size: 10px;
+    }
+
+    a:link {
+      color: white;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    a:visited {
+      color: white;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    a:hover {
+      color: green;
+      background-color: transparent;
+      text-decoration: underline;
+    }
+    a:active {
+      color: yellow;
+      background-color: transparent;
+      text-decoration: underline;
+    }
+
+    </style>
   </head>
   <body>
-    <div class="container">
       {% for div in divisions.all %}
-      <div class="row">
-        <a href="{% url 'daily_rundown' div.name %}"><h1>{{ div.name }}</h1></a>
-        <h1>Users:</h1>
+      <div id="container-escreve">
+        <div id="feito">
+          <a href="{% url 'daily_rundown' div.name %}"><h1>{{ div.name }}</h1></a>
+          <h1>Users:</h1>
+        </div>
+      </div>
         {% if div.member_set.all.count != 0 %}
           {% for member in div.member_set.all %}
-          <a href="{% url 'member_waste' member.name  %}">{{member.name}}</a>
+          <div id="container-caixa6">
+            <div id="feito">
+              <a href="{% url 'member_waste' member.name  %}">{{member.name}}</a>
+            </div>
+          </div>
           {% endfor %}
         {% else %}
-        <p>No users currently registered in this room</p>
+        <div id="container-caixa4">
+          <div id="feito">
+            <p>No users currently registered in this room</p>
+          </div>
+        </div>
         {% endif %}
+        <div id="container-caixa2">
+          <div id="feito">
+            <h1>Plugs:</h1>
+          </div>
+        </div>
 
-        <h1>Plugs:</h1>
         {% for product in div.products.all %}
-        <p>{{product.name}}</p>
+        <div id="container-caixa3">
+          <div id="feito">
+            <p>{{product.name}}</p>
+          </div>
+        </div>
         {% endfor %}
       </div>
-      <h2>{{div.monthly_waste}}</h2>
+      <div id="container-caixa5">
+        <div id="feito">
+          <h2> Waste: {{div.monthly_waste}}</h2>
+        </div>
+      </div>
       {% endfor %}
       <!-- {% for member in members %}
         <h1>{{ member.name }}</h1>
@@ -34,5 +158,10 @@
         {% endfor %}
       {% endfor %} -->
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
   </body>
 </html>

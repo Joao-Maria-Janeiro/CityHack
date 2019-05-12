@@ -152,14 +152,18 @@
                 </div>
                 <input id="password" name="password" placeholder="Password" type="password" required class="validate" >
             </div>
-
+            <br>
             <input type="submit" value="LogIn" />
         </form>
 
-        <div class="register">
+        <!-- <div class="register">
             Create your account here!
             <a href="{% url 'signup' %}"><button id="register-link">Register here</button></a>
-        </div>
+        </div> -->
+    </div>
+    <div class="register">
+      Create your account here!
+      <a style="text-align:center;" href="{% url 'signup' %}"><button id="register-link">Register here</button></a>
     </div>
   </body>
 </html>

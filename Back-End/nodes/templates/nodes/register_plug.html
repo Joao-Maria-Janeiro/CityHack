@@ -1,18 +1,50 @@
-{% load static %}
-
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+      body {
+        background-color: #262628;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        color: #F2F2F2;
+      }
+
+      #container-texto {
+        background-color: #1D1F20;
+        position: relative;
+        margin-top: 150px;
+        margin-bottom: 125px;
+        margin-right: 550px;
+        margin-left: 600px;
+        width: 340px;
+        height: 300px;
+        border-radius: 0.35em;
+        box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+
+      #title {
+        position: relative;
+        background-color: #1A1C1D;
+        width: 100%;
+        padding: 20px 0px;
+        border-radius: 0.35em;
+        font-size: 22px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+    </style>
   </head>
   <body>
 
-    <div class="container">
-          <br>
-          <br>
-          <h4 style="color:gray;">Adicionar um Plug</h4>
+    <div id="container-texto">
+        <div id="title">
+            <i class="material-icons ">Adicionar um Plug
+        </div>
           <br>
           <br>
           {% if error %}
@@ -23,15 +55,20 @@
             <div class="form-row">
               <div class="col-md-6">
                 <input required type="text" class="form-control" id="id_activation_key" name="activation_key" placeholder="Insert the activation key ">
+                <br>
+                <br>
               </div>
               <div class="col-md-6">
                 <input required type="text" class="form-control" id="id_division_name" name="division_name" placeholder="What's the location?">
+                <br>
+                <br>
               </div>
               <div>
                 <input required type="text" class="form-control" id="id_plug_name" name="name" placeholder="Plug name">
+                <br>
+                <br>
               </div>
             </div>
-            <br>
             <br>
             {% if form.errors %}
                 <p class=" label label-danger">{{ form.errors }}</p>

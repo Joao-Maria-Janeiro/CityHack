@@ -6,16 +6,57 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+      body {
+            background-color: #262628;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #F2F2F2;
+      }
+      #container-escreve {
+        margin-top: 100px;
+        margin-bottom: 125px;
+        margin-left: 600px;
+        width: 280px;
+        height: 0px;
+        text-align: center;
+      }
+      #container-topico {
+        margin-top: 0px;
+        margin-bottom:30px;
+        margin-left: 600px;
+        width: 280px;
+        height: 0px;
+        text-align: center;
+      }
+      #feito {
+        position: center;
+        background-color: #1A1C1D;
+        width: 100%;
+        padding: 20px 0px;
+        border-radius: 0.35em;
+        font-size: 10px;
+      }
+    </style>
   </head>
   <body>
 
   <div class="">
-    <h1>{{member.name}}</h1>
-    <h1>Total monthly costs so far: {{member.monthly_waste}}</h1>
+    <div id="container-escreve">
+      <div id="feito">
+        <h1>{{member.name}}</h1>
+        <h1>Total monthly costs so far: {{member.monthly_waste}}</h1>
+      </div>
+    </div>
     {% for division in member.divisions.all %}
      {% for price in div_price %}
       {% if price.name == division.name %}
-      <p>{{division.name}}: {{price.price}}</p>
+      <div id="container-topico">
+        <div id="feito">
+          <p>{{division.name}}: {{price.price}}</p>
+        </div>
+      </div>
       {% endif %}
      {% endfor %}
     <!-- <p> {% widthratio division.monthly_waste division.member_set.all.count 1 %} </p> -->

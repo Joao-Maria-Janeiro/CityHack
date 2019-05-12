@@ -25,13 +25,13 @@ from django.contrib.auth.models import User
 #}
 
 
-def send_email(node):
+def send_email(message):
     try:
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.ehlo()
         server.starttls()
         server.login(config.EMAIL, config.PASSWORD)
-        msg = "You are close to reaching your daily limit"
+        msg = message
         message = "Subject: {}\n\n{}".format("Energy Warning", msg).encode('utf-8').strip()
         server.sendmail(config.EMAIL, node.email, message)
         server.quit()
@@ -51,11 +51,58 @@ def update_daily(node):
     node.save()
 
 
+def make_recommendation():
+    maxz = 0
+    second_maxz = 0
+    max_plug = Plug()
+    second_maxz_plug = Plug()
+    for plug in Plug.objects.all():
+        if(plug.current_daily_waste  > maxz):
+            maxz = plug.current_daily_waste
+            max_plug = plug
+    for plug in Plug.objects.all():
+        if(plug.current_daily_waste  > second_maxz and plug.current_daily_waste != maxz):
+            second_maxz = plug.current_daily_waste
+            second_maxz_plug = plug
+    if(max_plug.current_daily_waste > 2 * second_maxz_plug.current_daily_waste):
+        send_email(maxz.name + " has a much higher waste than the rest of the plugs, give it a look")
+
+def make_recomendation_1():
+    max_energy_per_member = 0
+    second_max_per_member = 0
+
+    max_member = UserProfile.members()
+    second_member = UserProfile.members()
+
+    for member in user.userprofile.members.all():
+        if(member.monthly_waste > max_energy_per_member):
+            max_energy_per_member = member.monthly_waste
+            max_member = member
+
+    for member in user.userprofile.members.all():
+        if(member.monthly_waste > second_max_per_member and member.monthly_waste != max_energy_per_member):
+            second_max_per_member = member.monthly_waste
+            second_member = member
+
+    if(max_member.monthly_waste > 2 * second_member.monthly_waste):
+        send_email(max_member.name + " is using too much energy, be careful")
+
+# def make_recomendation_2():
+    #ver se o gasto da plug no mes anterior foi mt superior ao gasto deste mes e vice versa
+    #caso seja, quer dizer que o eletrodomestico pode estar com defeito
+    #nesse caso deve ser averiguado
+
+# def make_recomendation_3():
+    #ver horas de menor trafico, mas n temos os valores guardados por horas
+
 
 def check_proximity_to_value(node, user):
     curr_value = node.current_daily_waste * user.energy_plan
     if(curr_value > (user.monthly_budget/calendar.monthrange(now.year, now.month)[1]) - 15):
-        send_email(node)
+        send_email("You are close to reaching your daily limit")
+        make_recommendation()
+        make_recomendation_1()
+
 
 # Create your views here.
 @login_required
