@@ -25,7 +25,9 @@ void setup() {
 
 void loop() {                   
     if(digitalRead(pinIn))  circuit_on_off();
-      
+    Serial.println(digitalRead(pinIn));
+
+    
 }
 
 
