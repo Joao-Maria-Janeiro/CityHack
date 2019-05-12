@@ -21,3 +21,7 @@ class Division(models.Model):
     daily_waste = models.FloatField(default=-1.0)
     monthly_waste = models.FloatField(default=-1.0)
     days = models.ManyToManyField(Day, blank=True)
+
+class Price(models.Model):
+    price = models.FloatField(default=-1.0)
+    name = models.CharField(max_length=100)

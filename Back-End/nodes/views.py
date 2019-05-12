@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Plug, Division, Day
+from .models import Plug, Division, Day, Price
 from users.models import Member
 from django.http import HttpResponse
 import datetime
@@ -10,17 +10,17 @@ import calendar
 
 
 # The price for Kwh for each power contract (price) of the simple contract
-# electricity_costs = {
+#electricity_costs = {
 #     '1.15': 0.1595,
 #     '2.3': 0.1598,
 #     '3.45': 0.15690,
 #     '4.6': 0.16050,
 #     '5.75': 0.16170,
 #     '6.9': 0.16190,
-#     '10,35': 0.16200,
-#     '13,8': 0.16330,
-#     '17,25': 0.16420
-# }
+#    '10,35': 0.16200,
+#    '13,8': 0.16330,
+#    '17,25': 0.16420
+#}
 
 
 def send_email(node):
@@ -131,16 +131,35 @@ def member_waste(request, member_name):
     member = user.userprofile.members.get(name=member_name)
     divisions = member.divisions.all()
     current_waste = 0
+    div_price = []
     for division in divisions:
         number_of_members = division.member_set.all().count()
         current_waste += division.monthly_waste/number_of_members
+        price = Price(name=division.name, price=division.monthly_waste/number_of_members)
+        price.save()
+        div_price.append(price)
     member.monthly_waste = current_waste
     member.save()
 
-    return render(request, 'nodes/member_waste.html', {'divisions': divisions, 'member': member, 'member_name':member_name, 'current_waste':current_waste})
+    return render(request, 'nodes/member_waste.html', {'divisions': divisions, 'member': member, 'member_name':member_name, 'current_waste':current_waste, 'div_price':div_price})
+
 
 def update_waste(request):
-    return HttpResponse('HEY')
+    headers = request.META['HTTP_ACTIVATION-KEY']
+    return HttpResponse(headers)
+    if request.method == 'POST':
+        node = Plug.objects.get(activation_key=request.POST['activation_key'])
+        update_daily(node)
+        node.save()
+        node.current_daily_waste += request.POST['read']
+        node.save()
+        check_proximity_to_value()
+        return HttpResponse('Waste changed')
+    else:
+        return HttpResponse(' Only POST method is allowed ')
+
+# def update_waste(request):
+#     return HttpResponse('HEY')
     # if request.method == 'POST':
     #     node = Plug.objects.get(activation_key=request.POST['activation_key'])
     #     update_daily(node)

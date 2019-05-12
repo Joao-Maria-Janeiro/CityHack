@@ -1,5 +1,4 @@
 {% load static %}
-{% load mathfilters %}
 
 
 <!DOCTYPE html>
@@ -14,7 +13,12 @@
     <h1>{{member.name}}</h1>
     <h1>Total monthly costs so far: {{member.monthly_waste}}</h1>
     {% for division in member.divisions.all %}
-      <p>{{division.name}}: {{ division.monthly_waste|div:division.member_set.all.count}}</p>
+     {% for price in div_price %}
+      {% if price.name == division.name %}
+      <p>{{division.name}}: {{price.price}}</p>
+      {% endif %}
+     {% endfor %}
+    <!-- <p> {% widthratio division.monthly_waste division.member_set.all.count 1 %} </p> -->
     {% endfor %}
 
     <!-- {% for member in members %}

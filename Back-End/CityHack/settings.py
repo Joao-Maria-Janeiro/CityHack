@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'nodes',
     'users',
-    'mathfilters',
+    # 'mathfilters',
 ]
 
 MIDDLEWARE = [
