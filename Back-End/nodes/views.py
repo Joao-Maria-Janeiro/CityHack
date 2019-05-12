@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from .models import Plug, Division, Day, Price
-from users.models import Member
+from users.models import Member, UserProfile
 from django.http import HttpResponse
 import datetime
 import smtplib
 import nodes.config_email as config
 from django.contrib.auth.decorators import login_required
 import calendar
+from django.contrib.auth.models import User
+
 
 
 # The price for Kwh for each power contract (price) of the simple contract
@@ -42,15 +44,17 @@ def send_email(node):
 def update_daily(node):
     currentDT = datetime.datetime.now()
     day = currentDT.day
-    if node.curr_day != day:
+    if node.current_day != day:
         node.current_monthly_waste += node.current_daily_waste
         node.current_daily_waste = 0
         node.curr_day = day
     node.save()
 
-def check_proximity_to_value(node):
-    curr_value = node.current_daily_waste * electricity_costs[node.power]
-    if(curr_value > (node.monthly_budget/30) - 15):
+
+
+def check_proximity_to_value(node, user):
+    curr_value = node.current_daily_waste * user.energy_plan
+    if(curr_value > (user.monthly_budget/30) - 15):
         send_email(node)
 
 # Create your views here.
@@ -71,7 +75,7 @@ def register_plug(request):
             request.user.save()
         # division = Division.objects.get(name=request.POST['division_name'])
 
-        product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'])
+        product = Plug(activation_key = request.POST['activation_key'], name = request.POST['name'], current_day = now.day)
         product.save()
         for i in range(1, calendar.monthrange(now.year, now.month)[1]+1):
             day = Day(day_number=i)
@@ -145,15 +149,27 @@ def member_waste(request, member_name):
 
 
 def update_waste(request):
-    headers = request.META['HTTP_ACTIVATION-KEY']
-    return HttpResponse(headers)
     if request.method == 'POST':
-        node = Plug.objects.get(activation_key=request.POST['activation_key'])
+        node = Plug.objects.get(activation_key=request.META['HTTP_ACTIVATIONKEY'])
         update_daily(node)
+        node.current_daily_waste += float(request.POST['read'])
         node.save()
-        node.current_daily_waste += request.POST['read']
-        node.save()
-        check_proximity_to_value()
+        found = 0
+        for userz in UserProfile.objects.all():
+            for division in userz.divisions.all():
+                for product in division.products.all():
+                    if product.activation_key == request.META['HTTP_ACTIVATIONKEY']:
+                        user = userz
+                        div = division
+                        found = 1
+                        break
+                if found == 1:
+                    break
+            if found == 1:
+                break
+        div.daily_waste += float(request.POST['read'])
+        div.save()
+        check_proximity_to_value(node, user)
         return HttpResponse('Waste changed')
     else:
         return HttpResponse(' Only POST method is allowed ')
@@ -171,8 +187,8 @@ def update_waste(request):
     # else:
     #     return HttpResponse(' Only POST method is allowed ')
 
-def set_monthly_budget(request):
-    return HttpResponse('HEY')
+# def set_monthly_budget(request):
+#     return HttpResponse('HEY')
     # if request.method == 'POST':
     #     node = Plug.objects.get(activation_key=request.POST['activation_key'])
     #     node.monthly_budget = request.POST['monthly_budget']
