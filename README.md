@@ -1,4 +1,6 @@
 # EcoThinking Project
+Projecto desenvolvido por: [João Maria Janeiro](https://github.com/Joao-Maria-Janeiro), [Guilherme Viegas](https://github.com/Guilherme-Viegas), (Duarte Honrado)[https://github.com/duartehonrado], [Diogo Ribeiro](https://github.com/diogoribeiro0015), [Pedro Guerreiro](https://github.com/pedroso1001) e [João Almeida](https://github.com/Umelhor99).  
+
 Um projecto que tem em mente a economização e gestão energética de uma casa.
 
 
